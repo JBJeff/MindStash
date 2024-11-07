@@ -18,13 +18,13 @@ function HeaderComponent() {
   return (
     <header className="header">
       <div className="logo">
-        <h1>Notizen Dashboard</h1>
+        <h1>MindStash</h1>
       </div>
 
       <nav className="nav">
         {/* Menü für Notizen-Dashboard */}
-        <a href="/dashboard" className="link">
-          Notizen Dashboard
+        <a href="/notices" className="link">
+          Notizen
         </a>
 
         {/* Einloggen und Ausloggen Optionen */}
