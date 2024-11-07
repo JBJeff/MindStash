@@ -1,7 +1,6 @@
 package com.restApi.RestApi.Basics.entity;
 
 import java.time.LocalDateTime;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +11,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+
+
 
 @Entity
 @Table(name = "notes")
@@ -24,7 +25,11 @@ public class Note {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user; // User-Entität, die als Fremdschlüssel referenziert wird
+    private User user; // Referenz zur Benutzer-Entität
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category; // Referenz zur Kategorie-Entität
 
     @Column(name = "title", nullable = false, length = 255)
     private String title;
@@ -57,6 +62,14 @@ public class Note {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getTitle() {
