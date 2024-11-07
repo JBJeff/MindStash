@@ -12,7 +12,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 @Entity
 @Table(name = "categories")
@@ -28,7 +27,7 @@ public class Category {
     private User user; // Referenz zur Benutzer-Entität
 
     @Column(name = "name", nullable = false, length = 100)
-    private String name; // Name der Kategorie (z.B. "Arbeit", "Persönlich")
+    private String name; // Name der Kategorie (z.B. "Arbeit", "Persönlich", "Studium")
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt; // Erstellungsdatum der Kategorie
