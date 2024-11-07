@@ -1,0 +1,64 @@
+/* Header.css */
+
+/* Header oben fixiert mit grüner Hintergrundfarbe */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #28a745; /* Grüner Hintergrund */
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sanfter Schatten für Abgrenzung */
+    z-index: 1000; /* Stellt sicher, dass der Header über anderem Inhalt bleibt */
+  }
+  
+  /* Logo-Stil */
+  .logo h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  /* Navigation mit links und Buttons */
+  .nav {
+    display: flex;
+    gap: 20px;
+  }
+  
+  /* Links im Header */
+  .link {
+    text-decoration: none;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  
+  .link:hover {
+    color: #ffc107; /* Hellgelber Hover-Effekt für Links */
+  }
+  
+  /* Button-Stil */
+  .button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #218838; /* Dunkelgrüner Hintergrund für Buttons */
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #1e7e34; /* Dunklerer Grünton bei Hover */
+  }
+  
+  /* Optional: Abstände vom Hauptinhalt */
+  body {
+    margin-top: 80px; /* Damit der Header nicht den Inhalt überlappt */
+  }
