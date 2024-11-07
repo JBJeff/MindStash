@@ -7,6 +7,7 @@ import FooterComponent from './basic/FooterComponent'
 
 import React, { useRef, useState } from 'react'
 import LoginComponent from './basic/LoginComponent'
+import RegisterComponent from './basic/RegisterComponent'
 
 
 
@@ -31,6 +32,7 @@ export default function MindStash() {
 
                         <Route path='/' element={<WelcomeComponent />}></Route>
                         <Route path='/login' element={<LoginComponent />}></Route>
+                        <Route path='/register' element={<RegisterComponent />}></Route>
 
 
                     </Routes>
