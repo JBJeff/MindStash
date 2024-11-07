@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import {  useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { Link } from 'react-router-dom'; 
 import  './cs_bComponents/Header.css';
 
 function HeaderComponent() {
   // Zustand für den Login-Status
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const navigate = useNavigate();
+
   // Funktion für das Einloggen
   const handleLogin = () => {
-    setIsLoggedIn(true);
+    navigate('/login');
   };
 
   // Funktion für das Ausloggen
@@ -18,7 +22,10 @@ function HeaderComponent() {
   return (
     <header className="header">
       <div className="logo">
-        <h1>MindStash</h1>
+        {/* Hier das Logo in einen Link einbetten, der zur Startseite führt */}
+        <Link to="/" >
+          MindStash
+        </Link>
       </div>
 
       <nav className="nav">

@@ -29,7 +29,7 @@ export default function MindStash() {
                     <Routes>
                         {/* <AuthenticatedRoute></AuthenticatedRoute> wird erstmal rausgenommen, SPÄTER WIEDER EINFÜGEN */}
 
-                        <Route path='' element={<WelcomeComponent />}></Route>
+                        <Route path='/' element={<WelcomeComponent />}></Route>
                         <Route path='/login' element={<LoginComponent />}></Route>
 
 
