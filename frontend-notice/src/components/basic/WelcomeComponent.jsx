@@ -1,16 +1,22 @@
+import React from 'react';
+import './cs_bComponents/Welcome.css';
+
+
 function WelcomeComponent() {
     return (
       <div className="welcomeComponent">
         <header className="welcomeHeader">
-          <h1>Willkommen auf meiner Webseite!</h1>
-          <p>Schön, dass du hier bist. Entdecke unsere Inhalte und genieße deinen Besuch.</p>
+          <h1>Willkommen bei MindStash!</h1>
+          <p>Willkommen bei MindStash – 
+            deinem Ort für die wertvollsten Gedanken! Tauche ein in eine Welt voller Inspiration, 
+            Ideen und Notizen, die den Geist beflügeln. 
+            Hier wird jeder Moment zu einem Schatz, den du aufbewahren kannst. 
+            Bereit, deine besten Gedanken zu sammeln?</p>
         </header>
         <main className="main-content">
-          <button className="explore-button">Entdecken</button>
+        <p className="main-text">Erkunde die Funktionen</p>
+          <button className="explore-button">Funktionen</button>
         </main>
-        <footer className="footer">
-          <p>&copy; 2024 Mein Webprojekt. Alle Rechte vorbehalten.</p>
-        </footer>
       </div>
     );
   }
