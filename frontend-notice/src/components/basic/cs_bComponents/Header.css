@@ -1,12 +1,12 @@
-/* Header oben fixiert mit grüner Hintergrundfarbe */
+/* Header oben fixiert mit dunkelgrauem Hintergrund */
 .header {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    background-color: #28a745; /* Grüner Hintergrund */
-    color: white;
-    padding: 0px 0px; /* Noch weniger Padding für einen kleineren Header */
+    background-color: #1c1c1c; /* Dunkles Grau-Schwarz als Hintergrund, wie beim Footer */
+    color: white; /* Weiße Schriftfarbe */
+    padding: 0px 20px; /* Weniger Padding für einen kleineren Header */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -15,16 +15,15 @@
     height: 60px; /* Setzt eine explizite Höhe, um den Header zu begrenzen */
 }
 
-/* Logo-Stil */
-.logo  {
-    
-    font-size: 5px; /* Noch kleinere Schriftgröße für das Logo */
+/* Logo-Stil im Header */
+.logo {
+    font-size: 5px; /* Schriftgröße angepasst */
     font-weight: bold;
     margin: 0;
     text-align: center;
 }
 
-/* Navigation mit Links und Buttons */
+/* Navigation mit Links und Buttons im Header */
 .nav {
     display: flex;
     gap: 12px; /* Weniger Abstand zwischen den Links */
@@ -33,17 +32,17 @@
 /* Links im Header */
 .link {
     text-decoration: none;
-    color: white;
+    color: white; /* Weiße Schriftfarbe für die Links */
     font-size: 14px; /* Kleinere Schriftgröße für Links */
     font-weight: 500;
     transition: color 0.3s;
 }
 
 .link:hover {
-    color: #ffc107; /* Gelber Hover-Effekt für Links */
+    color: #28a745; /* Grüner Hover-Effekt für Links */
 }
 
-/* Button-Stil */
+/* Button-Stil im Header */
 .button {
     padding: 5px 12px; /* Weniger Padding für Buttons */
     border: none;
@@ -58,4 +57,3 @@
 .button:hover {
     background-color: #1e7e34; /* Dunklerer Grünton bei Hover */
 }
-
