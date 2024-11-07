@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes, Navigate, useNavigate } from 'react-router-dom'
 import WelcomeComponent from './basic/WelcomeComponent'
 import HeaderComponent from './basic/HeaderComponent'
+import FooterComponent from './basic/FooterComponent'
 
 
 
@@ -22,7 +23,7 @@ export default function MindStash() {
            
                 <BrowserRouter>
                      <HeaderComponent></HeaderComponent> 
-                     
+
                     {/* <AuthenticatedRoute> ist die Kompenente welche regelt das nur User zugriff auf die entsprechenden Routes erhalten die die Befugniss haben */}
                     <Routes>
                         {/* <AuthenticatedRoute></AuthenticatedRoute> wird erstmal rausgenommen, SPÄTER WIEDER EINFÜGEN */}
@@ -31,6 +32,8 @@ export default function MindStash() {
 
 
                     </Routes>
+
+                <FooterComponent></FooterComponent>
 
                     {/* <FooterComponent></FooterComponent> */}
                 </BrowserRouter>
