@@ -6,6 +6,7 @@ import FooterComponent from './basic/FooterComponent'
 
 
 import React, { useRef, useState } from 'react'
+import LoginComponent from './basic/LoginComponent'
 
 
 
@@ -29,6 +30,7 @@ export default function MindStash() {
                         {/* <AuthenticatedRoute></AuthenticatedRoute> wird erstmal rausgenommen, SPÄTER WIEDER EINFÜGEN */}
 
                         <Route path='' element={<WelcomeComponent />}></Route>
+                        <Route path='/login' element={<LoginComponent />}></Route>
 
 
                     </Routes>

@@ -3,7 +3,7 @@
     background-color: #f8f9fa; /* Sehr helles Grau oder Weiß als Hintergrund */
     color: black; /* Schwarze Schrift */
     font-family: Arial, sans-serif;
-    margin: 0;
+    margin: 20px;
     padding: 50px;
     /* height: 100vh; Volle Höhe des Viewports */
     display: flex;

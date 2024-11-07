@@ -17,7 +17,7 @@
 
 /* Logo-Stil im Header */
 .logo {
-    font-size: 5px; /* Schriftgröße angepasst */
+    font-size: 15px; /* Schriftgröße angepasst */
     font-weight: bold;
     margin: 0;
     text-align: center;
@@ -27,6 +27,7 @@
 .nav {
     display: flex;
     gap: 12px; /* Weniger Abstand zwischen den Links */
+    align-items: center;
 }
 
 /* Links im Header */
@@ -41,6 +42,13 @@
 .link:hover {
     color: #28a745; /* Grüner Hover-Effekt für Links */
 }
+
+.logo:hover {
+    filter: drop-shadow(0 0 2em #646cffaa);
+  }
+  .logo.react:hover {
+    filter: drop-shadow(0 0 2em #61dafbaa);
+  }
 
 /* Button-Stil im Header */
 .button {
