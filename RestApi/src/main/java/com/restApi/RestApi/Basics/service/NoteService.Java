@@ -19,18 +19,20 @@ public class NoteService {
 
 
 
+    // Methode zum Erstellen einer neuen Notiz innerhalb einer Kategorie
     public Note createNote(Long userId, Long categoryId, String title, String content) {
-        // Lade User und Category basierend auf den IDs
+        // Benutzer aus der Datenbank laden
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
+        // Kategorie aus der Datenbank laden
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new IllegalArgumentException("Category not found"));
 
-        // Erstelle eine neue Note und setze die Eigenschaften
+        // Neue Notiz erstellen und setzen
         Note note = new Note();
-        note.setUser(user);  // Setze das User-Objekt
-        note.setCategory(category);  // Setze das Category-Objekt
+        note.setUser(user);  // Setze den Benutzer
+        note.setCategory(category);  // Setze die Kategorie der Notiz
         note.setTitle(title);
         note.setContent(content);
         
@@ -43,7 +45,7 @@ public class NoteService {
 
 
 
-    
+
     //Später AUSBAUEN
     public Note getNoteByShareableLink(String shareableLink) {
         return noteRepository.findByShareableLink(shareableLink);  // Abrufen der Notiz anhand des Shareable Links
