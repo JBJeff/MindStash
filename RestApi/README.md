@@ -55,9 +55,7 @@ Eine Notiz kann zuätzlich Bilder und Links beinhalten
 - **Archivieren von Notizen**: Verwalten von inaktiven Notizen.
 
 ## Datenbank Schema
-![Logo](doc/images/MindStashER_Diagram.png)
-
-<img src="doc/images/MindStashER_Diagram.png" alt="Logo" width="200">
+<img src="doc/images/MindStashER_Diagram.png" alt="ER" width="400">
 
 ---
 
