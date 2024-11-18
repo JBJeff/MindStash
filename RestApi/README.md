@@ -57,6 +57,8 @@ Eine Notiz kann zuätzlich Bilder und Links beinhalten
 ## Datenbank Schema
 ![Logo](doc/images/MindStashER_Diagram.png)
 
+<img src="doc/images/MindStashER_Diagram.png" alt="Logo" width="200">
+
 ---
 
    
