@@ -11,10 +11,10 @@ import com.restApi.RestApi.Basics.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    // Findet einen Benutzer anhand seiner E-Mail-Adresse (wir gehen davon aus, dass die E-Mail eindeutig ist)
+    // Findet einen Benutzer anhand seiner E-Mail-Adresse (eindeutige e-mail)
     Optional<User> findByEmail(String email);
 
-    // Optional: Findet einen Benutzer anhand der ID (obwohl JpaRepository diese Methode bereits bietet)
+    // Optional: Findet einen Benutzer anhand der ID (JpaRepository bietet diese Methode bereits)
     Optional<User> findById(Long id);
 
     // Optional: Findet einen Benutzer, der aktiv ist

@@ -5,6 +5,7 @@ import com.restApi.RestApi.Basics.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -18,14 +19,22 @@ public class UserService {
     }
 
     // Benutzer erstellen
-    public User createUser(String email, String passwordHash, String firstName, String lastName) {
-        User user = new User();
-        user.setEmail(email);
-        user.setPasswordHash(passwordHash);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        // Weitere Benutzerinformationen hinzufügen, falls erforderlich
-        return userRepository.save(user);
+   public User createUser(String email, String passwordHash, String firstName, String lastName) {
+        // Prüft, ob ein Benutzer mit der E-Mail bereits existiert
+        userRepository.findByEmail(email).ifPresent(existingUser -> {
+            throw new IllegalArgumentException("Ein Benutzer mit dieser E-Mail existiert bereits!");
+        });
+
+        // Neuen Benutzer erstellen
+        User newUser = new User();
+        newUser.setEmail(email);
+        newUser.setPasswordHash(passwordHash); // Hash wird angenommen (z.B. durch BCryptEncoder)
+        newUser.setFirstName(firstName);
+        newUser.setLastName(lastName);
+        newUser.setCreatedAt(LocalDateTime.now());
+        newUser.setIsActive(true);
+
+        return userRepository.save(newUser);
     }
 
     // Benutzer nach ID finden
