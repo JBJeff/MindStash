@@ -1,20 +1,16 @@
 package com.restApi.RestApi.Basics.repository;
 
+import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.restApi.RestApi.Basics.entity.Note;
+
 @Repository
-public interface NoteRepository extends JpaRepository<Note, Long> {
+public interface NoteRepository extends JpaRepository<Note, Long>{
+     
     
     
-    
-    
-
-
-
-
-
-    
-    //SPÄTER AUSBAUEN
-    Note findByShareableLink(String shareableLink);  // Sucht nach einer Notiz über den shareableLink, 
+     
 }

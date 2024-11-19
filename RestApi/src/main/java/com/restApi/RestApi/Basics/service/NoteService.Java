@@ -39,13 +39,6 @@ public class NoteService {
         return noteRepository.save(note);  // Speichern der Notiz
     }
 
-
-
-
-
-
-
-
     //Später AUSBAUEN
     public Note getNoteByShareableLink(String shareableLink) {
         return noteRepository.findByShareableLink(shareableLink);  // Abrufen der Notiz anhand des Shareable Links

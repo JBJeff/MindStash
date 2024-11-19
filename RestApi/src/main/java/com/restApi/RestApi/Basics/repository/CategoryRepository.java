@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.restApi.RestApi.Basics.entity.Category;
 
+
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
 

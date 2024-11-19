@@ -2,6 +2,8 @@ package com.restApi.RestApi.Basics.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import com.restApi.RestApi.Basics.entity.Note;
+
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
