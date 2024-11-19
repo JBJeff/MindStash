@@ -1,70 +1,64 @@
 import React, { useState } from 'react';
 import './cs_bComponents/Register.css'; // Füge hier deine CSS Datei ein
+import { registerUser } from '../api/UserApiService';  
+
 
 function RegisterComponent() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
+  
+  const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState("");
 
-  const handleChange = (e) => {
-    
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Hier kannst du die Logik für die Registrierung einfügen, z. B. API-Request
-    console.log('Registriert mit:', formData);
-  };
+        const requestBody = {
+            email,
+            password,
+            firstName,
+            lastName
+        };
 
-  return (
-    <div className="register-container">
-      <h2>Registrieren</h2>
-      <form onSubmit={handleSubmit} className="register-form">
-        <div className="form-group">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            placeholder="Dein Name"
-            required
-          />
+        try {
+            const data = await registerUser(requestBody);  // Hier rufst du die API-Funktion auf
+            setSuccessMessage(`User registered successfully: ${data.firstName} ${data.lastName}`);
+            setError(null);
+        } catch (error) {
+            setError(error.message);  // Fehlernachricht vom API-Client
+            setSuccessMessage(null);
+        }
+    };
+
+    return (
+        <div className="form-container">
+            <h2>Register</h2>
+            <form onSubmit={handleSubmit} className="register-form">
+                <div className="input-group">
+                    <label>Email:</label>
+                    <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" />
+                </div>
+                <div className="input-group">
+                    <label>Password:</label>
+                    <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter your password" />
+                </div>
+                <div className="input-group">
+                    <label>First Name:</label>
+                    <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} placeholder="Enter your first name" />
+                </div>
+                <div className="input-group">
+                    <label>Last Name:</label>
+                    <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder="Enter your last name" />
+                </div>
+                <button type="submit" className="submit-button">Register</button>
+            </form>
+
+            {successMessage && <p className="success-message">{successMessage}</p>}
+            {error && <p className="error-message">{error}</p>}
         </div>
-
-        <div className="form-group">
-          <label htmlFor="email">E-Mail</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Deine E-Mail"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="password">Passwort</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Dein Passwort"
-            required
-          />
-        </div>
-
-        <button type="submit" className="submit-btn">Registrieren</button>
-      </form>
-    </div>
-  );
+    );
 }
 
 export default RegisterComponent;
