@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-//@ComponentScan(basePackages = "com.restApi.RestApi.Basics") // Gibt das zu scannende Paket an
+//spr@ComponentScan(basePackages = "com.restApi.RestApi.Basics") // Gibt das zu scannende Paket an
 public class RestApiApplication {
 
 	
