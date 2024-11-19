@@ -28,13 +28,27 @@ public class UserService {
         // Neuen Benutzer erstellen
         User newUser = new User();
         newUser.setEmail(email);
-        newUser.setPasswordHash(passwordHash); // Hash wird angenommen (z.B. durch BCryptEncoder)
+        newUser.setPasswordHash(passwordHash); // Hash wird noch implementiert.
         newUser.setFirstName(firstName);
         newUser.setLastName(lastName);
         newUser.setCreatedAt(LocalDateTime.now());
         newUser.setIsActive(true);
 
         return userRepository.save(newUser);
+    }
+
+    // Login eines Benutzers
+    public Optional<User> loginUser(String email, String password) {
+        // Benutzer anhand der E-Mail suchen
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            // Vergleicht das eingegebene Passwort mit dem gespeicherten Passwort
+            if (user.getPasswordHash().equals(password)) {
+                return Optional.of(user); // Passwort korrekt, Login erfolgreich
+            }
+        }
+        return Optional.empty(); // E-Mail oder Passwort falsch
     }
 
     // Benutzer nach ID finden
