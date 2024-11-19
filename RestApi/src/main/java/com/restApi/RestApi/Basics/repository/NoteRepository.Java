@@ -10,7 +10,8 @@ import com.restApi.RestApi.Basics.entity.Note;
 @Repository
 public interface NoteRepository extends JpaRepository<Note, Long>{
      
-    
+     // benutzerdefinierte Abfrage, um eine Notiz anhand eines Shareable Links zu finden
+     Optional<Note> findByShareableLink(String shareableLink);
     
      
 }
