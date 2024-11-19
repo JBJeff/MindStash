@@ -30,7 +30,7 @@ function HeaderComponent() {
 
       <nav className="nav">
         {/* Menü für Notizen-Dashboard */}
-        <a href="/notices" className="link">
+        <a href="/mainDashBoard" className="link">
           Notizen
         </a>
 

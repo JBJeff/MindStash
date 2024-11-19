@@ -25,6 +25,7 @@ function LoginComponent() {
       
       // Erfolgreiche Anmeldung
       setSuccessMessage(`Login successful: ${response.firstName} ${response.lastName}`);
+      navigate('/mainDashBoard');  // Navigiere zur Hauptseite
       
       // Hier kannst du z.B. den Benutzer in den Status setzen, ein Token speichern etc.
       // localStorage.setItem("authToken", response.token);  // Falls du Token speicherst
