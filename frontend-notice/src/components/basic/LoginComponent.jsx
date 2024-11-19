@@ -1,27 +1,37 @@
 import React, { useState } from 'react';
 import  './cs_bComponents/Login.css';
 import { useNavigate } from "react-router-dom"
+import { loginUser } from '../api/UserApiService';
 
 function LoginComponent() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const navigate = useNavigate();
 
-  // Formulardaten beim Absenden verarbeiten
-  const handleLogin = (e) => {
-    e.preventDefault();
-    
-    // Einfache Validierung
-    if (!email || !password) {
-      setErrorMessage('Bitte füllen Sie alle Felder aus!');
-      return;
-    }
+  const handleLogin = async (e) => {
+    e.preventDefault(); // Verhindert das Standard-Verhalten (Seiten-Neuladen)
+    setErrorMessage(null);  // Fehler zurücksetzen
+    setSuccessMessage(null);  // Erfolg zurücksetzen
 
-    // Hier kannst du die Login-Logik implementieren (z.B. API-Anfrage)
-    setErrorMessage('');
-    console.log('E-Mail:', email, 'Passwort:', password);
+    const userData = { email, password };
+
+    try {
+      // Versuche den Login-API-Aufruf
+      const response = await loginUser(userData);
+      
+      // Erfolgreiche Anmeldung
+      setSuccessMessage(`Login successful: ${response.firstName} ${response.lastName}`);
+      
+      // Hier kannst du z.B. den Benutzer in den Status setzen, ein Token speichern etc.
+      // localStorage.setItem("authToken", response.token);  // Falls du Token speicherst
+    } catch (error) {
+      // Fehlerbehandlung
+      setErrorMessage(error.message || "An error occurred. Please try again later.");
+    }
   };
 
   const handleRegister = () => {
@@ -32,10 +42,11 @@ function LoginComponent() {
     <div className="loginComponent">
       <main className="login-main-content">
         <h1>Login</h1>
+        
         <form className="login-form" onSubmit={handleLogin}>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
-          
-          
+          {successMessage && <p className="success-message">{successMessage}</p>}
+
           <div className="input-group">
             <label htmlFor="email">E-Mail:</label>
             <input
@@ -61,11 +72,11 @@ function LoginComponent() {
           </div>
 
           <button type="submit" className="login-button">Login</button>
-          
         </form>
-        
-        <button className="register-button" onClick={handleRegister}>Registrieren</button> {/* onClick für normale Navigation und onSubmit für Formulare*/}
 
+        <button className="register-button" onClick={handleRegister}>
+          Registrieren
+        </button>
       </main>
     </div>
   );
