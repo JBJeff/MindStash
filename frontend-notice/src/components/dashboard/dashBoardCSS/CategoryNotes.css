@@ -1,0 +1,31 @@
+.category-notes {
+    padding: 20px;
+  }
+  
+  .add-note-button {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .add-note-button:hover {
+    background-color: #45a049;
+  }
+  
+  .notes-list {
+    margin-top: 20px;
+  }
+  
+  .note {
+    background-color: #f9f9f9;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  

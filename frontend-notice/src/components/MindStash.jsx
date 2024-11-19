@@ -8,6 +8,8 @@ import FooterComponent from './basic/FooterComponent'
 import React, { useRef, useState } from 'react'
 import LoginComponent from './basic/LoginComponent'
 import RegisterComponent from './basic/RegisterComponent'
+import MainDashboard from './dashboard/mainDashboard'
+import CategoryNotes from './dashboard/CategoryNotes'
 
 
 
@@ -33,6 +35,8 @@ export default function MindStash() {
                         <Route path='/' element={<WelcomeComponent />}></Route>
                         <Route path='/login' element={<LoginComponent />}></Route>
                         <Route path='/register' element={<RegisterComponent />}></Route>
+                        <Route path='/mainDashBoard' element={<MainDashboard></MainDashboard>}></Route>
+                        <Route path="/categoryNotes/:categoryId" element={<CategoryNotes></CategoryNotes>} />
 
 
                     </Routes>
