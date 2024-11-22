@@ -16,7 +16,9 @@ public class SecurityConfig {
             .and()
             .authorizeHttpRequests()
                 .requestMatchers("/h2-console/**").permitAll() // Zugriff auf die H2-Konsole erlauben
+                .requestMatchers("/api/**").permitAll() //
                 .requestMatchers("/api/users/**").permitAll()
+               .requestMatchers("/api/categories/**").permitAll()
                 .anyRequest().authenticated() // Authentifizierung für andere Anfragen
             .and()
             .formLogin().permitAll(); // Standard-Login-Seite erlauben
