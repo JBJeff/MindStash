@@ -20,14 +20,14 @@ function LoginComponent() {
     const userData = { email, password };
 
     try {
-      // Versuche den Login-API-Aufruf
+      // Versucht den Login-API-Aufruf
       const response = await loginUser(userData);
       
       // Erfolgreiche Anmeldung
       setSuccessMessage(`Login successful: ${response.firstName} ${response.lastName}`);
       navigate('/mainDashBoard');  // Navigiere zur Hauptseite
       
-      // Hier kannst du z.B. den Benutzer in den Status setzen, ein Token speichern etc.
+      // Hier den Benutzer in den Status setzen und ein Token speichern 
       // localStorage.setItem("authToken", response.token);  // Falls du Token speicherst
     } catch (error) {
       // Fehlerbehandlung

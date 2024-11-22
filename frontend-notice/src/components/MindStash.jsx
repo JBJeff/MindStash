@@ -30,7 +30,7 @@ export default function MindStash() {
 
                     {/* <AuthenticatedRoute> ist die Kompenente welche regelt das nur User zugriff auf die entsprechenden Routes erhalten die die Befugniss haben */}
                     <Routes>
-                        {/* <AuthenticatedRoute></AuthenticatedRoute> wird erstmal rausgenommen, SPÄTER WIEDER EINFÜGEN */}
+                        {/* <AuthenticatedRoute></AuthenticatedRoute> wird erstmal rausgenommen, SPÄTER EINFÜGEN */}
 
                         <Route path='/' element={<WelcomeComponent />}></Route>
                         <Route path='/login' element={<LoginComponent />}></Route>

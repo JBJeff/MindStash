@@ -4,10 +4,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 export default function CategoryNotes({ categories }) {
   const { categoryId } = useParams(); // Die Kategorie-ID aus der URL
-  const navigate = useNavigate(); // Um ggf. auf eine andere Seite zu navigieren
+  const navigate = useNavigate(); 
   const [category, setCategory] = useState(null); // Zustand für die aktuelle Kategorie
   const [newNote, setNewNote] = useState(''); // Zustand für die neue Notiz
-  const [notes, setNotes] = useState([]); // Zustand für die Notizen (initial leer oder null)
+  const [notes, setNotes] = useState([]); // Zustand für die Notizen 
 
   // Findet die Kategorie anhand der Kategorie-ID
   useEffect(() => {

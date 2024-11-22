@@ -21,7 +21,6 @@ export const registerUser = async (userData) => {
 };
 
 // Funktion für den Benutzerlogin
-
 export const loginUser = async (userData) => {
     try {
         const response = await apiClient.post("/api/users/login", userData);

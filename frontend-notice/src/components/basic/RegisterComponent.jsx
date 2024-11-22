@@ -23,7 +23,7 @@ function RegisterComponent() {
         };
 
         try {
-            const data = await registerUser(requestBody);  // Hier rufst du die API-Funktion auf
+            const data = await registerUser(requestBody);  // API-Aufruf
             setSuccessMessage(`User registered successfully: ${data.firstName} ${data.lastName}`);
             setError(null);
         } catch (error) {

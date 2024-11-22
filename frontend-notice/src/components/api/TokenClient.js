@@ -1,3 +1,7 @@
+import jwt_decode from 'jwt-decode';
+
+
+// API-Client für die Authentifizierung
 export const fetchUserData = async () => {
     try {
       const response = await apiClient.get("/api/protected/user-data");
@@ -15,4 +19,19 @@ export const fetchUserData = async () => {
         throw new Error("An error occurred. Please try again later.");
       }
     }
+  };
+
+    // Funktion zum Abrufen der Kategorien eines Benutzers
+  const getUserIdFromToken = () => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      try {
+        const decodedToken = jwt_decode(token);
+        return decodedToken.userId; // userId aus dem Token extrahieren
+      } catch (error) {
+        console.error("Fehler beim Dekodieren des Tokens:", error);
+        return null; // Falls Token ungültig oder dekodieren fehlschlägt
+      }
+    }
+    return null; // Falls kein Token vorhanden
   };
