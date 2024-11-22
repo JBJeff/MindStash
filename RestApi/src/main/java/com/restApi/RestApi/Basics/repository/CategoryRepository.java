@@ -10,7 +10,7 @@ import com.restApi.RestApi.Basics.entity.Category;
 
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, Integer> {
+public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     // Findet alle Kategorien für einen bestimmten Benutzer
     List<Category> findByUserId(Long userId);

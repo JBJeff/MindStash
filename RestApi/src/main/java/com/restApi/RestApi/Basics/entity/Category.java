@@ -3,8 +3,9 @@ package com.restApi.RestApi.Basics.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,7 +22,7 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Integer id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -36,13 +37,14 @@ public class Category {
     @OneToMany(mappedBy = "category") // Eine Kategorie hat viele Notizen
     private List<Note> notes; // Liste von Notizen, die zu dieser Kategorie gehören
 
+
     // Getter und Setter
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
