@@ -20,8 +20,12 @@ public class SecurityConfig {
                 "/api/users/login", "/api/users/register").permitAll() // Zugriff erlauben
                 .anyRequest().authenticated() // Authentifizierung für andere Anfragen
             .and()
-            .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-            
+             .addFilterBefore(new JWTAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+            //formLogin().permitAll(); // Standard-Login-Seite erlauben
+
         return http.build();
     }
 }
+
+//"/h2-console/**","/api/**","/api/users/**", "/api/categories/**",
+                //"/api/users/login", "/api/users/register"

@@ -21,17 +21,4 @@ export const fetchUserData = async () => {
     }
   };
 
-    // Funktion zum Abrufen der Kategorien eines Benutzers
-  const getUserIdFromToken = () => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      try {
-        const decodedToken = jwt_decode(token);
-        return decodedToken.userId; // userId aus dem Token extrahieren
-      } catch (error) {
-        console.error("Fehler beim Dekodieren des Tokens:", error);
-        return null; // Falls Token ungültig oder dekodieren fehlschlägt
-      }
-    }
-    return null; // Falls kein Token vorhanden
-  };
+   

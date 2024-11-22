@@ -3,31 +3,63 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { getCategoriesForUser, createCategory, deleteCategory } from '../api/CategoryApiService';
 
+
+ // Funktion zum Abrufen der Kategorien eines Benutzers
+ const getUserIdFromToken = () => {
+  const token = localStorage.getItem("authToken");
+  if (token) {
+    try {
+      const decodedToken = jwt_decode(token);
+      return decodedToken.userId; // userId aus dem Token extrahieren
+    } catch (error) {
+      console.error("Fehler beim Dekodieren des Tokens:", error);
+      return null; // Falls Token ungültig oder dekodieren fehlschlägt
+    }
+  }
+  return null; // Falls kein Token vorhanden ist
+};
+
+
 export default function MainDashboard() {
-    const [categories, setCategories] = useState([]);  // Zustand für die Liste der erzeugten Kategorien
-    const [newCategoryName, setNewCategoryName] = useState('');  // Zustand für den neuen Kategoriennamen
-    const userId = 1; // Beispiel für eine Benutzer-ID, normalerweise wird diese dynamisch geladen
-  
-    // Funktion zum Abrufen der Kategorien von der API
+  const [categories, setCategories] = useState([]);  // Zustand für die Liste der erzeugten Kategorien
+  const [newCategoryName, setNewCategoryName] = useState('');  // Zustand für den neuen Kategoriennamen
+  const [userId, setUserId] = useState(null);  // Zustand für die Benutzer-ID
+
+  // Holen der Benutzer-ID bei Initialisierung der Komponente
+  useEffect(() => {
+    const id = getUserIdFromToken();  // Benutzer-ID aus dem Token extrahieren
+    setUserId(id);  // Setzen der Benutzer-ID im Zustand
+  }, []); // Einmalig beim ersten Rendern ausführen
+
+  // Funktion zum Abrufen der Kategorien von der API
   const fetchCategories = async () => {
+    if (!userId) {
+      console.error("Benutzer-ID nicht gefunden");
+      return;
+    }
+
     try {
       const data = await getCategoriesForUser(userId);
-      
-      // Überprüfe, ob die Antwort ein Array ist
+
       if (Array.isArray(data)) {
-        setCategories(data);  // Kategorien in den Zustand speichern
+        setCategories(data); // Kategorien in den Zustand speichern
       } else {
-        console.error('Die Antwort von der API ist kein Array');
-        setCategories([]);  // Leere Liste setzen, falls keine Array-Antwort kommt
+        console.error("Die Antwort von der API ist kein Array");
+        setCategories([]); // Leere Liste setzen, falls keine Array-Antwort kommt
       }
     } catch (error) {
-      console.error('Fehler beim Abrufen der Kategorien:', error.message);
-      setCategories([]);  // Leere Liste setzen, wenn ein Fehler auftritt
+      console.error("Fehler beim Abrufen der Kategorien:", error.message);
+      setCategories([]); // Leere Liste setzen, wenn ein Fehler auftritt
     }
   };
 
   // Funktion zum Erstellen einer neuen Kategorie
   const handleCreateCategory = async () => {
+    if (!userId) {
+      console.error("Benutzer-ID fehlt. Bitte melden Sie sich erneut an.");
+      return;
+    }
+
     if (newCategoryName.trim()) {
       const newCategory = {
         name: newCategoryName,
@@ -36,12 +68,12 @@ export default function MainDashboard() {
       try {
         await createCategory(userId, newCategory);
         fetchCategories(); // Lade die Kategorien neu
-        setNewCategoryName('');  // Setzt das Eingabefeld zurück
+        setNewCategoryName(""); // Setzt das Eingabefeld zurück
       } catch (error) {
-        console.error('Fehler beim Erstellen der Kategorie:', error.message);
+        console.error("Fehler beim Erstellen der Kategorie:", error.message);
       }
     } else {
-      alert('Bitte einen Namen für die Kategorie eingeben!');
+      alert("Bitte einen Namen für die Kategorie eingeben!");
     }
   };
 
@@ -51,48 +83,50 @@ export default function MainDashboard() {
       await deleteCategory(categoryId);
       fetchCategories(); // Lade die Kategorien neu
     } catch (error) {
-      console.error('Fehler beim Löschen der Kategorie:', error.message);
+      console.error("Fehler beim Löschen der Kategorie:", error.message);
     }
   };
 
   // Lade die Kategorien beim ersten Rendern
   useEffect(() => {
-    fetchCategories();
-  }, []);  // Leeres Array bedeutet, dass es nur einmal beim ersten Rendern aufgerufen wird.
-  
-  
-    return (
-      <div className="main-dashboard">
-        <h1>Main Dashboard</h1>
-  
-        <div className="create-category-section">
-          <input
-            type="text"
-            value={newCategoryName}
-            onChange={(e) => setNewCategoryName(e.target.value)}
-            placeholder="Gib den Namen der neuen Kategorie ein"
-          />
-          <button onClick={handleCreateCategory}>Erstelle Kategorie</button>
-        </div>
-  
-        <div className="categories-list">
-          <h2>Erstellte Kategorien</h2>
-          {categories.length === 0 ? (
-            <p>Keine Kategorien erstellt. Klicke auf "Erstelle Kategorie", um zu starten.</p>
-          ) : (
-            <ul>
-              {categories.map(category => (
-                <li key={category.id} className="category">
-                  {/* Weiterleitung zur CategoryNotes-Seite mit der entsprechenden Kategorie-ID */}
-                  <Link to={`/categoryNotes/${category.id}`}>{category.name}</Link>
-                  <button onClick={() => handleDeleteCategory(category.id)} className="delete-category-button">
-                    Löschen
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+    if (userId) {
+      fetchCategories();
+    } else {
+      console.error("Benutzer-ID ist nicht verfügbar, Benutzer ist nicht authentifiziert.");
+    }
+  }, [userId]); // Es wird erneut aufgerufen, wenn sich die Benutzer-ID ändert
+
+  return (
+    <div className="main-dashboard">
+      <h1>Main Dashboard</h1>
+
+      <div className="create-category-section">
+        <input
+          type="text"
+          value={newCategoryName}
+          onChange={(e) => setNewCategoryName(e.target.value)}
+          placeholder="Gib den Namen der neuen Kategorie ein"
+        />
+        <button onClick={handleCreateCategory}>Erstelle Kategorie</button>
       </div>
-    );
-  }
+
+      <div className="categories-list">
+        <h2>Erstellte Kategorien</h2>
+        {categories.length === 0 ? (
+          <p>Keine Kategorien erstellt. Klicke auf "Erstelle Kategorie", um zu starten.</p>
+        ) : (
+          <ul>
+            {categories.map(category => (
+              <li key={category.id} className="category">
+                <Link to={`/categoryNotes/${category.id}`}>{category.name}</Link>
+                <button onClick={() => handleDeleteCategory(category.id)} className="delete-category-button">
+                  Löschen
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
