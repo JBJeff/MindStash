@@ -6,17 +6,23 @@ import { getCategoriesForUser, createCategory, deleteCategory } from '../api/Cat
 
  // Funktion zum Abrufen der Kategorien eines Benutzers
  const getUserIdFromToken = () => {
-  const token = localStorage.getItem("authToken");
-  if (token) {
-    try {
-      const decodedToken = jwt_decode(token);
-      return decodedToken.userId; // userId aus dem Token extrahieren
-    } catch (error) {
-      console.error("Fehler beim Dekodieren des Tokens:", error);
-      return null; // Falls Token ungültig oder dekodieren fehlschlägt
-    }
+  const token = localStorage.getItem("authToken"); // Token abrufen
+  if (!token) {
+    console.error("Kein Authentifizierungstoken gefunden.");
+    return null;
   }
-  return null; // Falls kein Token vorhanden ist
+
+  try {
+    const decodedToken = jwt_decode(token); // Token dekodieren
+    if (!decodedToken.userId) {
+      console.error("Benutzer-ID ist im Token nicht vorhanden.");
+      return null;
+    }
+    return decodedToken.userId;
+  } catch (error) {
+    console.error("Fehler beim Dekodieren des Tokens:", error);
+    return null;
+  }
 };
 
 
@@ -25,11 +31,16 @@ export default function MainDashboard() {
   const [newCategoryName, setNewCategoryName] = useState('');  // Zustand für den neuen Kategoriennamen
   const [userId, setUserId] = useState(null);  // Zustand für die Benutzer-ID
 
-  // Holen der Benutzer-ID bei Initialisierung der Komponente
   useEffect(() => {
-    const id = getUserIdFromToken();  // Benutzer-ID aus dem Token extrahieren
-    setUserId(id);  // Setzen der Benutzer-ID im Zustand
-  }, []); // Einmalig beim ersten Rendern ausführen
+    const id = getUserIdFromToken();
+    if (!id) {
+      console.error("Benutzer-ID nicht verfügbar. Umleitung zur Login-Seite.");
+      
+      //window.location.href = "/login";
+    } else {
+      setUserId(id);
+    }
+  }, []);
 
   // Funktion zum Abrufen der Kategorien von der API
   const fetchCategories = async () => {

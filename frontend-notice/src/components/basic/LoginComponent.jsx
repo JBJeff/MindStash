@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import  './cs_bComponents/Login.css';
 import { useNavigate } from "react-router-dom"
+const jwt_decode = (await import("jwt-decode")).default;
+
+
 import { loginUser } from '../api/UserApiService';
 
 function LoginComponent() {
@@ -20,18 +23,25 @@ function LoginComponent() {
     const userData = { email, password };
 
     try {
-      // Versucht den Login-API-Aufruf
+      // API-Aufruf zum Login
       const response = await loginUser(userData);
-      
-      // Erfolgreiche Anmeldung
-      setSuccessMessage(`Login successful: ${response.firstName} ${response.lastName}`);
-      navigate('/mainDashBoard');  // Navigiere zur Hauptseite
-      
-      // Hier den Benutzer in den Status setzen und ein Token speichern 
-      // localStorage.setItem("authToken", response.token);  // Falls du Token speicherst
+
+      if (response.token) {
+        // Token im localStorage speichern
+        localStorage.setItem("authToken", response.data.token);
+
+        //  Benutzer-ID aus dem Token dekodieren und speichern
+        const decodedToken = jwt_decode(response.token);
+        localStorage.setItem("userId", decodedToken.userId);
+
+        setSuccessMessage(`Login erfolgreich! Willkommen, ${decodedToken.firstName || 'Benutzer'}.`);
+        navigate('/mainDashBoard'); // Navigiere zur Hauptseite
+      } else {
+        throw new Error("Kein Token erhalten. Bitte überprüfe die Login-Daten.");
+      }
     } catch (error) {
       // Fehlerbehandlung
-      setErrorMessage(error.message || "An error occurred. Please try again later.");
+      setErrorMessage(error.message || "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.");
     }
   };
 

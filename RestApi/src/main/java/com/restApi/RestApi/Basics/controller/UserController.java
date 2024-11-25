@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.restApi.RestApi.Basics.JWT.JWTUtility;
+//import com.restApi.RestApi.Basics.JWT.JWTUtility;
 import com.restApi.RestApi.Basics.dto.UserLoginRequest;
 import com.restApi.RestApi.Basics.dto.UserRegistrationRequest;
 import com.restApi.RestApi.Basics.dto.UserResponseDTO;
@@ -27,8 +27,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-      @Autowired
-    private JWTUtility jwtUtility;
+    //   @Autowired
+    // private JWTUtility jwtUtility;
 
     @PostMapping("/register")
     public ResponseEntity<UserResponseDTO> registerUser(@Valid @RequestBody UserRegistrationRequest request) {
@@ -53,20 +53,20 @@ public class UserController {
     }
 
 
-    // Login-Endpunkt mit JWT-Token
-    @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestBody UserLoginRequest request) {
-        Optional<User> optionalUser = userService.loginUser(request.getEmail(), request.getPassword());
+    // // Login-Endpunkt mit JWT-Token
+    // @PostMapping("/login")
+    // public ResponseEntity<?> loginUser(@RequestBody UserLoginRequest request) {
+    //     Optional<User> optionalUser = userService.loginUser(request.getEmail(), request.getPassword());
 
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            // JWT-Token generieren
-            String token = jwtUtility.generateToken(String.valueOf(user.getId()));
-            return ResponseEntity.ok(Map.of("token", token));
-        }
+    //     if (optionalUser.isPresent()) {
+    //         User user = optionalUser.get();
+    //         // JWT-Token generieren
+    //         //String token = jwtUtility.generateToken(String.valueOf(user.getId()));
+    //         return ResponseEntity.ok(Map.of("token", token));
+    //     }
 
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
-    }
+    //     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+    // }
 
     // // Login-Endpunkt ohne JWT Token
     // @PostMapping("/login")
