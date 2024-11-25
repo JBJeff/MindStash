@@ -1,8 +1,6 @@
 import { apiClient } from "./ApiClient";
 
 /**
- * 
- * 
  * Autor: Jeffrey Böttcher
  * 
  * Beschreibung:
