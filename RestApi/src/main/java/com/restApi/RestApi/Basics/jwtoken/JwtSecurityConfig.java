@@ -4,6 +4,7 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,10 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
@@ -63,7 +68,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws
     // Deaktivieren der Authentifizierung für alle Endpunkte
     httpSecurity
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/**").permitAll()) // Alle Pfade sind ohne Authentifizierung zugänglich
+                    .requestMatchers("/**","/api/users/register","/authenticate").permitAll()) // Alle Pfade sind ohne Authentifizierung zugänglich
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -73,6 +78,20 @@ public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws
                     .frameOptions().sameOrigin());
 
     return httpSecurity.build();
+}
+
+
+@Bean
+public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration configuration = new CorsConfiguration();
+    configuration.setAllowedOrigins(List.of("http://localhost:5173")); // Spezifizierte URL
+    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+    configuration.setAllowedHeaders(List.of("*"));
+    configuration.setAllowCredentials(true); // Erfordert eine definierte Liste von Ursprüngen
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", configuration);
+    return source;
 }
 
     // Bean für den UserDetailsService, der Benutzerinformationen bereitstellt.

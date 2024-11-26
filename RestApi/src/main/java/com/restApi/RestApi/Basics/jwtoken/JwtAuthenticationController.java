@@ -24,12 +24,12 @@ public class JwtAuthenticationController {
     //Endpunkt zur Authentifizierung eines Benutzers und zur Generierung eines JWT.
     @PostMapping("/authenticate")
     public ResponseEntity<JwtTokenResponse> generateToken(@RequestBody JwtTokenRequest jwtTokenRequest) {
-        System.out.println("Anmeldeversuch mit Benutzername: " + jwtTokenRequest.username());
+        System.out.println("Anmeldeversuch mit E-Mail: " + jwtTokenRequest.username());
         
         try {
             // Erzeugt ein Authentifizierungstoken
             var authenticationToken = new UsernamePasswordAuthenticationToken(
-                    jwtTokenRequest.username(), 
+                    jwtTokenRequest.username(),  //E-Mail des Benutzers
                     jwtTokenRequest.password());
 
             // Versucht, den Benutzer zu authentifizieren

@@ -1,11 +1,14 @@
 package com.restApi.RestApi.Basics.controller;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,40 +19,50 @@ import com.restApi.RestApi.Basics.dto.UserLoginRequest;
 import com.restApi.RestApi.Basics.dto.UserRegistrationRequest;
 import com.restApi.RestApi.Basics.dto.UserResponseDTO;
 import com.restApi.RestApi.Basics.entity.User;
+import com.restApi.RestApi.Basics.repository.UserRepository;
 import com.restApi.RestApi.Basics.service.UserService;
 
 import jakarta.validation.Valid;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     @Autowired
     private UserService userService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
+    
+
+    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
     //   @Autowired
     // private JWTUtility jwtUtility;
 
     @PostMapping("/register")
-    public ResponseEntity<UserResponseDTO> registerUser(@Valid @RequestBody UserRegistrationRequest request) {
-        User newUser = userService.createUser(
-                request.getEmail(),
-                request.getPassword(),
-                request.getFirstName(),
-                request.getLastName()
-        );
+    public ResponseEntity<?> registerUser(@RequestBody UserRegistrationRequest request) {
+        // Prüfen, ob die E-Mail bereits registriert ist
+        if (userRepository.existsByEmail(request.getEmail())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("E-Mail bereits registriert");
+        }
 
-        // Konvertierung zur DTO für die Antwort
-        UserResponseDTO response = new UserResponseDTO(
-                newUser.getId(),
-                newUser.getEmail(),
-                newUser.getFirstName(),
-                newUser.getLastName(),
-                newUser.getCreatedAt(),
-                newUser.getIsActive()
-        );
+        // Neues Benutzerobjekt erstellen
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setPasswordHash(passwordEncoder.encode(request.getPassword())); // Passwort sicher hashen
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setIsActive(true);
+        user.setCreatedAt(LocalDateTime.now());
 
-        return ResponseEntity.ok(response);
+        // Benutzer in der Datenbank speichern
+        userRepository.save(user);
+
+        return ResponseEntity.ok("Benutzer erfolgreich registriert");
     }
 
 
