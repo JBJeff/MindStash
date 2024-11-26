@@ -1,47 +1,36 @@
 import React, { useState } from 'react';
 import  './cs_bComponents/Login.css';
 import { useNavigate } from "react-router-dom"
-const jwt_decode = (await import("jwt-decode")).default;
+import { useAuth } from '../security/AuthContext.jsx'
+// const jwt_decode = (await import("jwt-decode")).default;
 
 
-import { loginUser } from '../api/UserApiService';
+// import { loginUser } from '../api/UserApiService';
 
 function LoginComponent() {
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setShowErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
-
+  
+  
+  
+  const authContext = useAuth();
   const navigate = useNavigate();
 
+  
+
   const handleLogin = async (e) => {
-    e.preventDefault(); // Verhindert das Standard-Verhalten (Seiten-Neuladen)
-    setErrorMessage(null);  // Fehler zurücksetzen
-    setSuccessMessage(null);  // Erfolg zurücksetzen
-
-    const userData = { email, password };
-
-    try {
-      // API-Aufruf zum Login
-      const response = await loginUser(userData);
-
-      if (response.token) {
-        // Token im localStorage speichern
-        localStorage.setItem("authToken", response.data.token);
-
-        //  Benutzer-ID aus dem Token dekodieren und speichern
-        const decodedToken = jwt_decode(response.token);
-        localStorage.setItem("userId", decodedToken.userId);
-
-        setSuccessMessage(`Login erfolgreich! Willkommen, ${decodedToken.firstName || 'Benutzer'}.`);
-        navigate('/mainDashBoard'); // Navigiere zur Hauptseite
-      } else {
-        throw new Error("Kein Token erhalten. Bitte überprüfe die Login-Daten.");
-      }
-    } catch (error) {
-      // Fehlerbehandlung
-      setErrorMessage(error.message || "Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.");
+     // Authentifizierung wird durchgeführt
+     if (await authContext.login(username, password)) {
+      
+      // Bei erfolgreicher Authentifizierung weiterleiten
+      navigate(`/mainDashBoard`);
+      console.log('Login erfolgreich');
+    } else {
+      // Bei fehlgeschlagener Authentifizierung Fehlermeldung anzeigen
+      console.log('Login fehlgeschlagen');
+      
     }
   };
 

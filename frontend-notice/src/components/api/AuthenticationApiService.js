@@ -18,5 +18,5 @@ import { apiClient } from "./ApiClient";
  *   das ein JWT-Token enthält, wenn die Authentifizierung erfolgreich war.
  * */
 
-export function executeJWTAuthenticationService(username, password) {
-    return apiClient.post("/authenticate", {username,password})}
+export function executeJWTAuthenticationService(email, password) {
+    return apiClient.post("/authenticate", {email,password})}

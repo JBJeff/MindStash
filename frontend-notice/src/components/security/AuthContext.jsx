@@ -22,20 +22,20 @@ export default function AuthProvider({ children }) {
 
   // State-Variablen zur Verwaltung des Authentifizierungsstatus
   const [isAuthenticated, setAuthenticated] = useState(false);
-  const [username, setUsername] = useState(null);
+  const [email, setEmail] = useState(null);
   const [token, setToken] = useState(null);
 
   // Funktion zur Anmeldung
-  async function login(username, password) {
+  async function login(email, password) {
     try {
       // Authentifizierung durchführen und Token erhalten
-      const response = await executeJWTAuthenticationService(username, password);
+      const response = await executeJWTAuthenticationService(email, password);
       const jwtToken = 'Bearer ' + response.data.token;
       
       // Erfolgreiche Anmeldung
       if (response.status === 200) {
         setAuthenticated(true);
-        setUsername(username);
+        setEmail(email);
         setToken(jwtToken);
 
         // API-Client mit JWT-Token konfigurieren
@@ -67,7 +67,7 @@ export default function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, username, token }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, email, token }}>
       {children}
     </AuthContext.Provider>
   );

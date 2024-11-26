@@ -8,7 +8,7 @@ import FooterComponent from './basic/FooterComponent'
 import React, { useRef, useState } from 'react'
 import LoginComponent from './basic/LoginComponent'
 import RegisterComponent from './basic/RegisterComponent'
-import MainDashboard from './dashboard/mainDashboard'
+import MainDashboard from './dashboard/MainDashboard'
 import CategoryNotes from './dashboard/CategoryNotes'
 
 
