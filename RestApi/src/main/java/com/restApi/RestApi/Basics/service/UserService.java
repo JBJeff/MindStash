@@ -3,32 +3,40 @@ package com.restApi.RestApi.Basics.service;
 import com.restApi.RestApi.Basics.entity.User;
 import com.restApi.RestApi.Basics.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+
+
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;//Wichtig sonst stimmt der bergleich zu Passwort und HashedPasswort nicht !!!!
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // Benutzer erstellen
-   public User createUser(String email, String passwordHash, String firstName, String lastName) {
+    public User createUser(String email, String rawPassword, String firstName, String lastName) {
         // Prüft, ob ein Benutzer mit der E-Mail bereits existiert
         userRepository.findByEmail(email).ifPresent(existingUser -> {
             throw new IllegalArgumentException("Ein Benutzer mit dieser E-Mail existiert bereits!");
         });
 
+        // Passwort hashen
+        String hashedPassword = passwordEncoder.encode(rawPassword);
+
         // Neuen Benutzer erstellen
         User newUser = new User();
         newUser.setEmail(email);
-        newUser.setPasswordHash(passwordHash); // Hash wird noch implementiert.
+        newUser.setPasswordHash(hashedPassword);
         newUser.setFirstName(firstName);
         newUser.setLastName(lastName);
         newUser.setCreatedAt(LocalDateTime.now());
@@ -38,17 +46,16 @@ public class UserService {
     }
 
     // Login eines Benutzers
-    public Optional<User> loginUser(String email, String password) {
+    public Optional<User> loginUser(String email, String rawPassword) {
         // Benutzer anhand der E-Mail suchen
-        Optional<User> optionalUser = userRepository.findByEmail(email);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            // Vergleicht das eingegebene Passwort mit dem gespeicherten Passwort
-            if (user.getPasswordHash().equals(password)) {
-                return Optional.of(user); // Passwort korrekt, Login erfolgreich
+        return userRepository.findByEmail(email).filter(user -> {
+            // Passwort-Hash prüfen
+            boolean passwordMatches = passwordEncoder.matches(rawPassword, user.getPasswordHash());
+            if (!passwordMatches) {
+                System.out.println("Ungültiges Passwort für Benutzer: " + email);
             }
-        }
-        return Optional.empty(); // E-Mail oder Passwort falsch
+            return passwordMatches;
+        });
     }
 
     // Benutzer nach ID finden
@@ -63,15 +70,12 @@ public class UserService {
 
     // Benutzer aktualisieren
     public Optional<User> updateUser(Long id, String firstName, String lastName, Boolean isActive) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+        return userRepository.findById(id).map(user -> {
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setIsActive(isActive);
-            return Optional.of(userRepository.save(user));
-        }
-        return Optional.empty();
+            return userRepository.save(user);
+        });
     }
 
     // Benutzer löschen
@@ -85,12 +89,9 @@ public class UserService {
 
     // Benutzer aktivieren/deaktivieren
     public Optional<User> toggleUserStatus(Long id) {
-        Optional<User> optionalUser = userRepository.findById(id);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+        return userRepository.findById(id).map(user -> {
             user.setIsActive(!user.getIsActive());
-            return Optional.of(userRepository.save(user));
-        }
-        return Optional.empty();
+            return userRepository.save(user);
+        });
     }
 }
