@@ -2,35 +2,25 @@ import React, { useState } from 'react';
 import  './cs_bComponents/Login.css';
 import { useNavigate } from "react-router-dom"
 import { useAuth } from '../security/AuthContext.jsx'
-// const jwt_decode = (await import("jwt-decode")).default;
 
-
-// import { loginUser } from '../api/UserApiService';
 
 function LoginComponent() {
   const [errorMessage, setShowErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
-  
-  
   const authContext = useAuth();
   const navigate = useNavigate();
 
   
 
   const handleLogin = async (e) => {
-     // Authentifizierung wird durchgeführt
-     if (await authContext.login(username, password)) {
-      
-      // Bei erfolgreicher Authentifizierung weiterleiten
-      navigate(`/mainDashBoard`);
+    e.preventDefault(); // Verhindert Standardformularverhalten
+    if (await authContext.login(email, password)) {
+      navigate('/mainDashBoard');
       console.log('Login erfolgreich');
     } else {
-      // Bei fehlgeschlagener Authentifizierung Fehlermeldung anzeigen
       console.log('Login fehlgeschlagen');
-      
     }
   };
 
@@ -83,3 +73,4 @@ function LoginComponent() {
 }
 
 export default LoginComponent;
+

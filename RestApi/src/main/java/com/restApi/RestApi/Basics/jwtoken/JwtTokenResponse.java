@@ -1,8 +1,6 @@
 package com.restApi.RestApi.Basics.jwtoken;
 
 /**
- * Autor: Jeffrey Böttcher
- * Version: 1.0
  * 
  * Beschreibung:
  * Die Klasse `JwtTokenResponse` repräsentiert die Antwort auf eine JWT-Authentifizierungsanfrage.

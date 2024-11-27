@@ -19,4 +19,8 @@ import { apiClient } from "./ApiClient";
  * */
 
 export function executeJWTAuthenticationService(email, password) {
-    return apiClient.post("/authenticate", {email,password})}
+    return apiClient.post("/authenticate", {
+        email, 
+        password // Beide Felder müssen exakt mit dem Backend-DTO übereinstimmen
+    });
+}

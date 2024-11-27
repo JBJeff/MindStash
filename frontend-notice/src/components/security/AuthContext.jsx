@@ -62,7 +62,7 @@ export default function AuthProvider({ children }) {
   // Funktion zum Abmelden des Benutzers
   function logout() {
     setAuthenticated(false);
-    setUsername(null);
+    setEmail(null);
     setToken(null);
   }
 

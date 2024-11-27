@@ -3,7 +3,7 @@ import WelcomeComponent from './basic/WelcomeComponent'
 import HeaderComponent from './basic/HeaderComponent'
 import FooterComponent from './basic/FooterComponent'
 
-
+import AuthProvider, { useAuth } from './security/AuthContext.jsx'
 
 import React, { useRef, useState } from 'react'
 import LoginComponent from './basic/LoginComponent'
@@ -11,8 +11,31 @@ import RegisterComponent from './basic/RegisterComponent'
 import MainDashboard from './dashboard/MainDashboard'
 import CategoryNotes from './dashboard/CategoryNotes'
 
+/**
+ * Beschreibung:
+ * Die `AuthenticatedRoute`-Komponente schützt bestimmte Routen, indem sie überprüft, ob der Benutzer authentifiziert ist.
+ * Wenn der Benutzer authentifiziert ist, wird der Inhalt angezeigt, andernfalls wird der Benutzer zur Login-Seite weitergeleitet.
+ */
+export function AuthenticatedRoute({ children }) {
+    const authContext = useAuth();
+
+    if (authContext.isAuthenticated) {
+        console.log('funktioniert');
+        return children;
+
+    }
 
 
+    return <Navigate to="/login" />
+}
+
+
+/**
+ * Beschreibung:
+ * Die `MindStash`-Komponente ist die Hauptkomponente der Anwendung und enthält die Router-Logik und das Layout.
+ * Sie verwendet den `AuthProvider` zum Bereitstellen des Authentifizierungsstatus und den `BrowserRouter` für die 
+ * Routing-Funktionalität. Die verschiedenen Routen der Anwendung werden hier definiert.
+ */
 export default function MindStash() {
 
 
@@ -24,7 +47,7 @@ export default function MindStash() {
             Für bessere veranschaulichung und präsentation der App wurde die Authentifizierung rausgenommen.
             
             */}
-           
+            <AuthProvider>
                 <BrowserRouter>
                      <HeaderComponent></HeaderComponent> 
 
@@ -45,6 +68,7 @@ export default function MindStash() {
 
                     {/* <FooterComponent></FooterComponent> */}
                 </BrowserRouter>
+                </AuthProvider>
             
         </div>
     )

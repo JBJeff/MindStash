@@ -17,16 +17,17 @@ export const apiClient = axios.create({
 
 // Interceptor für Anfragen hinzufügen. globales Authentifizierungssystem
 // WICHTIG: /register rausnehmen sonst funktioniert das Registrieren nicht!!!
-apiClient.interceptors.request.use(
-  (config) => {
-      const token = localStorage.getItem("authToken");
 
-      // `Authorization`-Header nur für geschützte Routen setzen
-      if (token && !config.url.includes("/register") && !config.url.includes("/authenticate")) {
-          config.headers.Authorization = `Bearer ${token}`;
-      }
+// apiClient.interceptors.request.use(
+//   (config) => {
+//       const token = localStorage.getItem("authToken");
 
-      return config;
-  },
-  (error) => Promise.reject(error)
-);
+//       // `Authorization`-Header nur für geschützte Routen setzen
+//       if (token && !config.url.includes("/register") && !config.url.includes("/authenticate")) {
+//           config.headers.Authorization = `Bearer ${token}`;
+//       }
+
+//       return config;
+//   },
+//   (error) => Promise.reject(error)
+// );

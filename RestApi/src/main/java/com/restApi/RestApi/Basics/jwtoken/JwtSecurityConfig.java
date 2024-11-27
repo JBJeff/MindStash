@@ -64,35 +64,33 @@ public class JwtSecurityConfig {
      * - Aktiviert OAuth2-Ressourcen-Server mit JWT.
      */
     @Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-    // Deaktivieren der Authentifizierung für alle Endpunkte
-    httpSecurity
+    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+            .cors(Customizer.withDefaults()) // Wendet die CORS-Konfiguration an
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/**","/api/users/register","/authenticate").permitAll()) // Alle Pfade sind ohne Authentifizierung zugänglich
+                .requestMatchers("/**", "/api/users/register", "/api/users/login", "/authenticate").permitAll())
             .csrf(AbstractHttpConfigurer::disable)
-            .sessionManagement(session -> session
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
             .httpBasic(Customizer.withDefaults())
-            .headers(header -> header
-                    .frameOptions().sameOrigin());
+            .headers(header -> header.frameOptions().sameOrigin());
+        
+        return httpSecurity.build();
+    }
 
-    return httpSecurity.build();
-}
 
-
-@Bean
-public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOrigins(List.of("http://localhost:5173")); // Spezifizierte URL
-    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-    configuration.setAllowedHeaders(List.of("*"));
-    configuration.setAllowCredentials(true); // Erfordert eine definierte Liste von Ursprüngen
-
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", configuration);
-    return source;
-}
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+    
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 
     // Bean für den UserDetailsService, der Benutzerinformationen bereitstellt.
     @Bean

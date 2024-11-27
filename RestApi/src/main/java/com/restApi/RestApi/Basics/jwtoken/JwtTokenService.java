@@ -13,9 +13,6 @@ import org.springframework.stereotype.Service;
 
 
 /**
- * Autor: Jeffrey Böttcher
- * Version: 1.0
- * 
  * Beschreibung:
  * Die Klasse `JwtTokenService` ist ein Service, der JWTs (JSON Web Tokens) erstellt.
  * Sie verwendet einen `JwtEncoder`, um den Token zu generieren, der Authentifizierungsinformationen und
