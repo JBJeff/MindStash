@@ -15,7 +15,7 @@ function HeaderComponent() {
   // Funktion für das Einloggen
   const handleLogin = () => {
     navigate('/login');
-    setIsLoggedIn(true);
+    //setIsLoggedIn(true);
   };
 
   // Funktion für das Ausloggen

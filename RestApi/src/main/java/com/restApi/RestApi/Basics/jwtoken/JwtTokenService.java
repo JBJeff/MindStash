@@ -11,6 +11,9 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
+import com.restApi.RestApi.Basics.dto.CustomUserDetails;
+import com.restApi.RestApi.Basics.entity.User;
+
 
 /**
  * Beschreibung:
@@ -30,6 +33,10 @@ public class JwtTokenService {
     //Generiert einen JWT-Token basierend auf den Authentifizierungsdetails des Benutzers.
     public String generateToken(Authentication authentication) {
 
+        //  getId() gibt ein Long zurück und es wird einen String konvertiert
+         Long userId = ((CustomUserDetails) authentication.getPrincipal()).getUserId();
+
+        
         // Berechtigungen des Benutzers in einem einzelnen String zusammenfassen
         var scope = authentication
                         .getAuthorities()
@@ -43,6 +50,7 @@ public class JwtTokenService {
                         .issuedAt(Instant.now())  // Zeitpunkt der Token-Erstellung
                         .expiresAt(Instant.now().plus(90, ChronoUnit.MINUTES))  // Ablaufdatum des Tokens
                         .subject(authentication.getName())  // Betreff des Tokens, typischerweise der Benutzername
+                        .claim("userId", userId)
                         .claim("scope", scope)  // Benutzerberechtigungen als benutzerdefinierter Anspruch
                         .build();
 

@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.restApi.RestApi.Basics.dto.CustomUserDetails;
 import com.restApi.RestApi.Basics.entity.User;
 import com.restApi.RestApi.Basics.repository.UserRepository;
 
@@ -27,15 +28,13 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Benutzer nicht gefunden: " + email));
         
-        // Konvertiere User in ein UserDetails-Objekt
-        return new org.springframework.security.core.userdetails.User(
+        // Gib CustomUserDetails zurück, nicht das Standard User-Objekt
+        return new CustomUserDetails(
                 user.getEmail(),
                 user.getPasswordHash(),
                 user.getIsActive(),
-                true,  // accountNonExpired
-                true,  // credentialsNonExpired
-                true,  // accountNonLocked
-                List.of() // Rollen (z. B. "ROLE_USER")
+                user.getId()  // User ID an CustomUserDetails übergeben
         );
     }
 }
+

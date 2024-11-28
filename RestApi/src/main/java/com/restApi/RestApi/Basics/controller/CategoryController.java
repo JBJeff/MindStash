@@ -1,13 +1,15 @@
 package com.restApi.RestApi.Basics.controller;
 
 import java.util.List;
+import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,14 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.restApi.RestApi.Basics.dto.CategoryDTO;
-import com.restApi.RestApi.Basics.dto.UserLoginRequest;
-import com.restApi.RestApi.Basics.dto.UserRegistrationRequest;
-import com.restApi.RestApi.Basics.dto.UserResponseDTO;
+import com.restApi.RestApi.Basics.dto.CustomUserDetails;
+
 import com.restApi.RestApi.Basics.entity.Category;
 import com.restApi.RestApi.Basics.entity.Note;
-import com.restApi.RestApi.Basics.entity.User;
 import com.restApi.RestApi.Basics.service.CategoryService;
-import com.restApi.RestApi.Basics.service.UserService;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -50,43 +49,43 @@ public class CategoryController {
 
     // API-Endpunkt zum Abrufen aller Kategorien eines Benutzers
     @GetMapping("/{userId}")
-public ResponseEntity<List<CategoryDTO>> getCategoriesForUser(@PathVariable Long userId) {
-    List<Category> categories = categoryService.getCategoriesForUser(userId);
+    public ResponseEntity<List<CategoryDTO>> getCategoriesForUser(@PathVariable Long userId) {
+        List<Category> categories = categoryService.getCategoriesForUser(userId);
 
-    // Kategorien in DTOs umwandeln
-    List<CategoryDTO> response = categories.stream().map(category -> {
-        CategoryDTO dto = new CategoryDTO();
-        dto.setId(category.getId());
-        dto.setName(category.getName());
+        // Kategorien in DTOs umwandeln
+        List<CategoryDTO> response = categories.stream().map(category -> {
+            CategoryDTO dto = new CategoryDTO();
+            dto.setId(category.getId());
+            dto.setName(category.getName());
 
-        // Notizen von List<Note> zu List<String> umwandeln
-        if (category.getNotes() != null) {
-            List<String> noteContents = category.getNotes().stream()
-                    .map(Note::getContent) // Extrahiere den Content der Notizen
-                    .collect(Collectors.toList());
-            dto.setNotes(noteContents);
-        } else {
-            dto.setNotes(new ArrayList<>());
-        }
+            // Notizen von List<Note> zu List<String> umwandeln
+            if (category.getNotes() != null) {
+                List<String> noteContents = category.getNotes().stream()
+                        .map(Note::getContent) // Extrahiere den Content der Notizen
+                        .collect(Collectors.toList());
+                dto.setNotes(noteContents);
+            } else {
+                dto.setNotes(new ArrayList<>());
+            }
 
-        return dto;
-    }).collect(Collectors.toList());
+            return dto;
+        }).collect(Collectors.toList());
 
-    return ResponseEntity.ok(response);
-}
+        return ResponseEntity.ok(response);
+    }
 
     // API-Endpunkt zum Aktualisieren von Notizen in einer Kategorie
-    @PutMapping("/{categoryId}/notes")
+    @PutMapping("/notes/{categoryId}")
     public ResponseEntity<CategoryDTO> addNoteToCategory(
             @PathVariable Long categoryId,
             @RequestBody String note) {
-    
+
         Category category = categoryService.addNoteToCategory(categoryId, note);
-    
+
         CategoryDTO response = new CategoryDTO();
         response.setId(category.getId());
         response.setName(category.getName());
-    
+
         // Notizen von List<Note> in List<String> umwandeln
         if (category.getNotes() != null) {
             List<String> noteContents = category.getNotes().stream()
@@ -96,7 +95,21 @@ public ResponseEntity<List<CategoryDTO>> getCategoriesForUser(@PathVariable Long
         } else {
             response.setNotes(new ArrayList<>());
         }
-    
+
         return ResponseEntity.ok(response);
     }
+
+    // Löscht eine Kategorie basierend auf der ID und der Benutzer-ID
+    @DeleteMapping("category/{id}")
+    public ResponseEntity<Void> deleteCategory(
+            @PathVariable Long id,
+            @AuthenticationPrincipal CustomUserDetails userDetails) throws AccessDeniedException {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 401 Unauthorized
+        }
+
+        categoryService.deleteCategory(id, userDetails.getUserId());
+        return ResponseEntity.noContent().build(); // 204 No Content
+    }
+
 }

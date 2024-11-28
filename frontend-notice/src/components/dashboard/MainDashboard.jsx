@@ -81,16 +81,26 @@ export default function MainDashboard() {
   };
 
   // Funktion: Kategorie löschen
-  const handleDeleteCategory = async (categoryId) => {
-    try {
-      await deleteCategory(categoryId);
-      const userIdFromToken = getUserIdFromToken();
-      fetchCategories(userIdFromToken);  // Kategorien neu laden
-    } catch (error) {
-      console.error("Fehler beim Löschen der Kategorie:", error.message);
+  // Funktion: Kategorie löschen
+const handleDeleteCategory = async (categoryId) => {
+  try {
+    // Überprüfe, ob die categoryId eine gültige ID ist
+    if (!categoryId) {
+      console.error("Keine gültige Kategorie-ID.");
+      return;  // Beende die Funktion, wenn keine gültige ID vorhanden ist
     }
-  };
 
+    // Lösche die Kategorie mit der ID
+    await deleteCategory(categoryId);
+
+    // Hole die User-ID aus dem Token
+    const userIdFromToken = getUserIdFromToken();
+    // Lade die Kategorien neu, nachdem die Kategorie gelöscht wurde
+    fetchCategories(userIdFromToken);
+  } catch (error) {
+    console.error("Fehler beim Löschen der Kategorie:", error.message);
+  }
+};
   return (
     <div className="main-dashboard">
       <h1>Main Dashboard</h1>

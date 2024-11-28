@@ -41,10 +41,10 @@ export default function AuthProvider({ children }) {
           
 
           // API-Client mit JWT-Token konfigurieren
-          apiClient.interceptors.request.use((config) => {
-            config.headers.Authorization = storedToken;
-            return config;
-          });
+          // apiClient.interceptors.request.use((config) => {
+          //   config.headers.Authorization = storedToken;
+          //   return config;
+          // });
         } else {
           // Token ist abgelaufen
           logout();
