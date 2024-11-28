@@ -65,19 +65,30 @@ public class CategoryService {
 }
 
 
- // Löscht eine Kategorie, wenn sie dem Benutzer gehört
- public void deleteCategory(Long categoryId, Long userId) throws AccessDeniedException {
-    // Kategorie aus der Datenbank abrufen
-    Category category = categoryRepository.findById(categoryId)
-            .orElseThrow(() -> new ResourceNotFoundException("Kategorie nicht gefunden mit ID: " + categoryId));
+//  // Löscht eine Kategorie, wenn sie dem Benutzer gehört
+//  public void deleteCategory(Long categoryId, Long userId) throws AccessDeniedException {
+//     // Kategorie aus der Datenbank abrufen
+//     Category category = categoryRepository.findById(categoryId)
+//             .orElseThrow(() -> new ResourceNotFoundException("Kategorie nicht gefunden mit ID: " + categoryId));
 
-    // Überprüfen, ob die Kategorie zur Benutzer-ID gehört
-    if (!category.getUser().getId().equals(userId)) {
-        throw new AccessDeniedException("Sie haben keine Berechtigung, diese Kategorie zu löschen.");
+//     // Überprüfen, ob die Kategorie zur Benutzer-ID gehört
+//     if (!category.getUser().getId().equals(userId)) {
+//         throw new AccessDeniedException("Sie haben keine Berechtigung, diese Kategorie zu löschen.");
+//     }
+
+//     // Kategorie löschen
+//     categoryRepository.delete(category);
+// }
+
+
+    // Methode zum Löschen einer Kategorie
+    public void deleteCategory(Long categoryId) {
+        // Überprüfen, ob die Kategorie existiert
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new ResourceNotFoundException("Kategorie nicht gefunden"));
+
+        // Löschen der Kategorie
+        categoryRepository.delete(category);
     }
-
-    // Kategorie löschen
-    categoryRepository.delete(category);
-}
 
 }

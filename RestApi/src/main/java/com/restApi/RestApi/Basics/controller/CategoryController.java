@@ -23,6 +23,7 @@ import com.restApi.RestApi.Basics.dto.CustomUserDetails;
 
 import com.restApi.RestApi.Basics.entity.Category;
 import com.restApi.RestApi.Basics.entity.Note;
+import com.restApi.RestApi.Basics.exception.ResourceNotFoundException;
 import com.restApi.RestApi.Basics.service.CategoryService;
 
 @RestController
@@ -100,16 +101,25 @@ public class CategoryController {
     }
 
     // Löscht eine Kategorie basierend auf der ID und der Benutzer-ID
-    @DeleteMapping("category/{id}")
-    public ResponseEntity<Void> deleteCategory(
-            @PathVariable Long id,
-            @AuthenticationPrincipal CustomUserDetails userDetails) throws AccessDeniedException {
-        if (userDetails == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 401 Unauthorized
-        }
+    // @DeleteMapping("category/{id}")
+    // public ResponseEntity<Void> deleteCategory(
+    //         @PathVariable Long id,
+    //         @AuthenticationPrincipal CustomUserDetails userDetails) throws AccessDeniedException {
+    //     if (userDetails == null) {
+    //         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 401 Unauthorized
+    //     }
 
-        categoryService.deleteCategory(id, userDetails.getUserId());
-        return ResponseEntity.noContent().build(); // 204 No Content
+    //     categoryService.deleteCategory(id, userDetails.getUserId());
+    //     return ResponseEntity.noContent().build(); // 204 No Content
+    // }
+     @DeleteMapping("/{categoryId}")
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long categoryId) {
+        try {
+            categoryService.deleteCategory(categoryId); // Aufruf der Löschen-Methode im Service
+            return ResponseEntity.noContent().build(); // Erfolgreiches Löschen ohne Inhalt (204 No Content)
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Kategorie nicht gefunden (404 Not Found)
+        }
     }
 
 }
