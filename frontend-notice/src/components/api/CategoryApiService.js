@@ -43,7 +43,7 @@ export const createCategory = async (userId, categoryData) => {
 // Funktion zum Löschen einer Kategorie
 export const deleteCategory = async (categoryId) => {
     try {
-        // Sende eine DELETE-Anfrage zum Löschen der Kategorie
+        // Sendet eine DELETE-Anfrage zum Löschen der Kategorie
         const response = await apiClient.delete(`/api/categories/${categoryId}`);
         return response;  // Erfolgreiche Antwort zurückgeben (status 204)
     } catch (error) {

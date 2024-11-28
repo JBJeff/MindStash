@@ -20,7 +20,7 @@ export const registerUser = async (userData) => {
     }
 };
 
-// Funktion für den Benutzerlogin
+// Funktion für den Benutzerlogin, wird nicht genutzt da der AuthContext das Login regelt.
 export const loginUser = async (userData) => {
     try {
         const response = await apiClient.post("/api/users/login", userData);
