@@ -3,7 +3,8 @@ import './dashBoardCSS/CategoryNotes.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { createNote } from "../api/NoteApiService";
 import { jwtDecode } from "jwt-decode"; 
-import { getCategoriesForUser } from '../api/CategoryApiService';  // Ändere den Pfad entsprechend
+import { getCategoriesForUser } from '../api/CategoryApiService';  
+import{uploadMedia} from '../api/MediaApiService';  
 
 
 export default function CategoryNotes({ categories }) {
@@ -20,6 +21,10 @@ export default function CategoryNotes({ categories }) {
     //const [isArchived, setIsArchived] = useState(null);  // Zustand für Archivstatus
     const [startDate, setStartDate] = useState("");  // Zustand für das Startdatum
     const [endDate, setEndDate] = useState("");  // Zustand für das Enddatum
+
+    const [mediaFiles, setMediaFiles] = useState([]); // Zustand für Medien
+  const [showMediaModal, setShowMediaModal] = useState(false); // Zustand für das Modal
+  const [selectedNoteId, setSelectedNoteId] = useState(null); // Die ID der Notiz, für die Medien angezeigt werden
 
   // Benutzer-ID aus dem Token abrufen
   const getUserIdFromToken = () => {
@@ -120,6 +125,21 @@ useEffect(() => {
 }, [category, keyword, startDate, endDate]);  // Trigger bei Änderungen der Filter
 
 
+// Funktion zum Hochladen eines Bildes für eine Notiz
+const handleUploadMedia = async (noteId, file) => {
+  if (!file) {
+    alert("Bitte wählen Sie eine Datei aus.");
+    return;
+  }
+
+  try {
+    const response = await uploadMedia(noteId, file); // API-Aufruf für das Hochladen
+    alert(`Bild erfolgreich hochgeladen: ${response.fileName}`);
+  } catch (error) {
+    alert('Fehler beim Hochladen des Bildes: ' + error.message);
+  }
+};
+
 
 return (
   <div className="category-notes">
@@ -147,36 +167,44 @@ return (
       <p>Lade Kategorie und Notizen...</p>
     ) : category ? (
       <>
-        <h2>Notizen für {category.name}</h2>
-        <div className="add-note-section">
-          <input
-            type="text"
-            value={newNote}
-            onChange={(e) => setNewNote(e.target.value)}
-            placeholder="Neue Notiz hinzufügen"
-          />
-          <button className="add-note-button" onClick={handleAddNote}>
-            Notiz Hinzufügen
-          </button>
-        </div>
+          <h2>Notizen für {category.name}</h2>
+          <div className="add-note-section">
+            <input
+              type="text"
+              value={newNote}
+              onChange={(e) => setNewNote(e.target.value)}
+              placeholder="Neue Notiz hinzufügen"
+            />
+            <button className="add-note-button" onClick={handleAddNote}>
+              Notiz Hinzufügen
+            </button>
+          </div>
 
-        <div className="notes-list">
-          <ul>
-            {notes.length === 0 ? (
-              <p>Keine Notizen für diese Kategorie.</p>
-            ) : (
-              notes.map((note, index) => (
-                <li key={index} className="note">
-                  {note}
-                </li>
-              ))
-            )}
-          </ul>
-        </div>
-      </>
-    ) : (
-      <p>Die Kategorie wurde nicht gefunden.</p>
-    )}
-  </div>
-);
+          <div className="notes-list">
+            <ul>
+              {notes.length === 0 ? (
+                <p>Keine Notizen für diese Kategorie.</p>
+              ) : 
+              (
+                
+                notes.map((note, index) => (
+                  <li key={index} className="note">
+                    <span>{note}</span>
+                    {/* Datei-Upload-Bereich */}
+                    <input
+                      type="file"
+                      onChange={(e) => handleUploadMedia(note.id, e.target.files[0])}
+                      className="upload-input"
+                    />
+                  </li>
+                ))
+              )}
+            </ul>
+          </div>
+        </>
+      ) : (
+        <p>Die Kategorie wurde nicht gefunden.</p>
+      )}
+    </div>
+  );
 }

@@ -8,7 +8,10 @@ import com.restApi.RestApi.Basics.entity.Media;
 
 @Repository
 public interface MediaRepository extends JpaRepository<Media, Integer> {
-    // Optional: Du kannst benutzerdefinierte Abfragen hinzufügen, z.B. nach noteId filtern
-    List<Media> findByNoteId(Integer noteId);
+    
+    // Optional:  benutzerdefinierte Abfragen hinzufügen, z.B. nach noteId filtern
+    
+    
+    List<Media> findByNoteId(Integer noteId); // Bilder für eine spezifische Notiz abrufen
 }
 

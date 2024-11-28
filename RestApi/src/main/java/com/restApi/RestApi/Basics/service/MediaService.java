@@ -17,43 +17,32 @@ public class MediaService {
 
     @Autowired
     private MediaRepository mediaRepository;
-
-    
     @Autowired
     private NoteRepository noteRepository;
 
-    //Bild speichern
-    public Media saveMedia(MultipartFile file, Long noteId) throws IOException {
-        //Stelle sicher, dass die Note existiert
-        
+    // Bild hochladen
+    public Media uploadMedia(Long noteId, MultipartFile file) throws IOException {
         Optional<Note> noteOptional = noteRepository.findById(noteId);
-        if (!noteOptional.isPresent()) {
-            throw new RuntimeException("Note with ID " + noteId + " not found");
+        if (noteOptional.isEmpty()) {
+            throw new IllegalArgumentException("Note not found with ID: " + noteId);
         }
-        Note note = noteOptional.get();
 
-        //Media-Objekt erstellen und speichern
         Media media = new Media();
-        media.setNote(note);
+        media.setNote(noteOptional.get());
         media.setType(file.getContentType());
-        media.setData(file.getBytes());  // Speichern der Bilddaten als byte[]
-
-        return mediaRepository.save(media); // Speichern in der Datenbank
+        media.setData(file.getBytes());
+        return mediaRepository.save(media);
     }
 
-    // Alle Medien für eine bestimmte Notiz abrufen
+    // Bilder für eine Notiz abrufen
     public List<Media> getMediaByNoteId(Integer noteId) {
-        return mediaRepository.findByNoteId(noteId);  // Holt alle Medien zu einer Note
+        return mediaRepository.findByNoteId(noteId);
     }
 
-    // Einzelnes Bild (Media) anhand der ID abrufen
-    public Media getMediaById(Integer id) {
-        return mediaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Media not found with ID: " + id));
+    // Einzelnes Bild abrufen
+    public Media getMediaById(Integer mediaId) {
+        return mediaRepository.findById(mediaId).orElseThrow(() -> 
+            new IllegalArgumentException("Media not found with ID: " + mediaId));
     }
 
-    // Löschen eines Mediums
-    public void deleteMedia(Integer id) {
-        mediaRepository.deleteById(id);
-    }
 }
