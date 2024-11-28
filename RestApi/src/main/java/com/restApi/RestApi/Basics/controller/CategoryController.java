@@ -100,18 +100,6 @@ public class CategoryController {
         return ResponseEntity.ok(response);
     }
 
-    // Löscht eine Kategorie basierend auf der ID und der Benutzer-ID
-    // @DeleteMapping("category/{id}")
-    // public ResponseEntity<Void> deleteCategory(
-    //         @PathVariable Long id,
-    //         @AuthenticationPrincipal CustomUserDetails userDetails) throws AccessDeniedException {
-    //     if (userDetails == null) {
-    //         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 401 Unauthorized
-    //     }
-
-    //     categoryService.deleteCategory(id, userDetails.getUserId());
-    //     return ResponseEntity.noContent().build(); // 204 No Content
-    // }
      @DeleteMapping("/{categoryId}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Long categoryId) {
         try {

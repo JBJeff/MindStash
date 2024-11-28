@@ -2,6 +2,15 @@ package com.restApi.RestApi.Basics.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.restApi.RestApi.Basics.entity.Category;
+import com.restApi.RestApi.Basics.entity.Note;
+import com.restApi.RestApi.Basics.entity.User;
+import com.restApi.RestApi.Basics.repository.CategoryRepository;
+import com.restApi.RestApi.Basics.repository.NoteRepository;
+import com.restApi.RestApi.Basics.repository.UserRepository;
+
 import java.time.LocalDateTime;
 
 @Service
@@ -11,36 +20,37 @@ public class NoteService {
     private NoteRepository noteRepository;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private UserRepository userRepository;
 
-
-
-    // Methode zum Erstellen einer neuen Notiz innerhalb einer Kategorie
-    public Note createNote(Long userId, Long categoryId, String title, String content) {
-        // Benutzer aus der Datenbank laden
+    // Methode zum Hinzufügen einer Notiz zu einer Kategorie
+    @Transactional
+    public Note addNoteToCategory(Long userId, Long categoryId, String title, String content) {
+        // Überprüfen, ob der Benutzer existiert
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Benutzer nicht gefunden"));
 
-        // Kategorie aus der Datenbank laden
+        // Überprüfen, ob die Kategorie existiert
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new IllegalArgumentException("Category not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Kategorie nicht gefunden"));
 
-        // Neue Notiz erstellen und setzen
+        // Eine neue Notiz erstellen und die notwendigen Felder setzen
         Note note = new Note();
-        note.setUser(user);  // Setze den Benutzer
-        note.setCategory(category);  // Setze die Kategorie der Notiz
+        note.setUser(user);  // Die Notiz wird mit dem Benutzer verknüpft
+        note.setCategory(category);  // Die Notiz wird mit der Kategorie verknüpft
         note.setTitle(title);
         note.setContent(content);
-        
-        return noteRepository.save(note);  // Speichern der Notiz
+        note.setCreatedAt(LocalDateTime.now());
+        note.setIsArchived(false);  // Standardwert (optional)
+
+        // Speichern der Notiz in der Datenbank
+        return noteRepository.save(note);
     }
 
     //Später AUSBAUEN
-    public Note getNoteByShareableLink(String shareableLink) {
-        return noteRepository.findByShareableLink(shareableLink);  // Abrufen der Notiz anhand des Shareable Links
-    }
+    // public Note getNoteByShareableLink(String shareableLink) {
+    //     return noteRepository.findByShareableLink(shareableLink);  // Abrufen der Notiz anhand des Shareable Links
+    // }
 }
