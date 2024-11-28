@@ -15,6 +15,12 @@ export default function CategoryNotes({ categories }) {
   const [userId, setUserId] = useState(null);  // Benutzer-ID
   const [loading, setLoading] = useState(true);  // Ladezustand
 
+    // Filterzustände
+    const [keyword, setKeyword] = useState("");  // Zustand für das Schlagwort
+    //const [isArchived, setIsArchived] = useState(null);  // Zustand für Archivstatus
+    const [startDate, setStartDate] = useState("");  // Zustand für das Startdatum
+    const [endDate, setEndDate] = useState("");  // Zustand für das Enddatum
+
   // Benutzer-ID aus dem Token abrufen
   const getUserIdFromToken = () => {
     const token = localStorage.getItem("authToken");  // Hole das Token aus localStorage
@@ -91,17 +97,57 @@ const handleAddNote = async () => {
   }
 };
 
+useEffect(() => {
+  if (category) {
+    let filteredNotes = category.notes || [];
+
+    // Filtern nach Schlagwort
+    if (keyword) {
+      filteredNotes = filteredNotes.filter(note =>
+        note.toLowerCase().includes(keyword.toLowerCase())
+      );
+    }
+    // Filtern nach Zeitraum
+    if (startDate) {
+      filteredNotes = filteredNotes.filter(note => new Date(note.createdAt) >= new Date(startDate));
+    }
+    if (endDate) {
+      filteredNotes = filteredNotes.filter(note => new Date(note.createdAt) <= new Date(endDate));
+    }
+
+    setNotes(filteredNotes);  // Setzt die gefilterten Notizen
+  }
+}, [category, keyword, startDate, endDate]);  // Trigger bei Änderungen der Filter
+
 
 
 return (
   <div className="category-notes">
+    {/* Filtersektion */}
+    <div className="filter-section">
+      <input
+        type="text"
+        placeholder="Schlagwort suchen"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+      />
+      <input
+        type="date"
+        value={startDate}
+        onChange={(e) => setStartDate(e.target.value)}
+      />
+      <input
+        type="date"
+        value={endDate}
+        onChange={(e) => setEndDate(e.target.value)}
+      />
+    </div>
+
     {loading ? (
-      <p>Lade Kategorie und Notizen...</p> // Ladeanzeige
+      <p>Lade Kategorie und Notizen...</p>
     ) : category ? (
       <>
-        <h2>Notizen für {category.name}</h2> {/* Zeige den Namen der Kategorie */}
-
-        {/* Eingabefeld und Button zum Hinzufügen einer neuen Notiz */}
+        <h2>Notizen für {category.name}</h2>
         <div className="add-note-section">
           <input
             type="text"
@@ -114,15 +160,14 @@ return (
           </button>
         </div>
 
-        {/* Liste der Notizen */}
         <div className="notes-list">
           <ul>
             {notes.length === 0 ? (
               <p>Keine Notizen für diese Kategorie.</p>
             ) : (
-              notes.map((note, index) => ( // liste aller Notizen
+              notes.map((note, index) => (
                 <li key={index} className="note">
-                  {note} {/* Zeigt den Notizinhalt */} 
+                  {note}
                 </li>
               ))
             )}
@@ -130,10 +175,8 @@ return (
         </div>
       </>
     ) : (
-      <p>Die Kategorie wurde nicht gefunden.</p> // Wenn keine Kategorie gefunden wurde
+      <p>Die Kategorie wurde nicht gefunden.</p>
     )}
   </div>
 );
-
-
 }
