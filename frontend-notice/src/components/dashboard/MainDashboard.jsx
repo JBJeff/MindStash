@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode"; // Korrekt benannten Import verwenden
+import { jwtDecode } from "jwt-decode"; 
 
 import { getCategoriesForUser, createCategory, deleteCategory } from "../api/CategoryApiService";
 
