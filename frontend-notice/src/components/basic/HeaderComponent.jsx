@@ -2,6 +2,7 @@ import {  useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Link } from 'react-router-dom'; 
 import  './cs_bComponents/Header.css';
+import { useAuth } from '../security/AuthContext.jsx'
 
 function HeaderComponent() {
   // Zustand für den Login-Status
@@ -9,15 +10,28 @@ function HeaderComponent() {
 
   const navigate = useNavigate();
 
+  const authContext = useAuth();
+
   // Funktion für das Einloggen
   const handleLogin = () => {
     navigate('/login');
+    setIsLoggedIn(true);
   };
 
   // Funktion für das Ausloggen
-  const handleLogout = () => {
+  // const handleLogout = () => {
+  //   setIsLoggedIn(false);
+
+  // };
+
+  const handleLogout = (e) => {
+    e.preventDefault(); // Verhindert Standardformularverhalten
+    authContext.logout(); // Führt die Logout-Funktion aus
+    navigate('/'); // Navigiert zur Startseite
+    console.log('Logout erfolgreich');
     setIsLoggedIn(false);
   };
+  
 
   return (
     <header className="header">
