@@ -21,7 +21,7 @@ Die Anwendung basiert auf:
   - `spring-boot-starter-validation`
 
 ## Architektur
-- **Architekturtyp**: Monolithisch
+- **Architekturtyp**: Modular Monolithisch
 - **Schichtenmodell**: 3-Schicht-Architektur
   1. **Controller-Schicht**: API-Endpunkte (z.B. `UserController`, `NoteController`)
   2. **Service-Schicht**: Geschäftsdaten-Logik
