@@ -26,7 +26,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Hier kannst du Benutzerrollen hinzufügen, falls erforderlich
+        // Benutzerrollen
         return List.of(); // Standard: keine Rollen
     }
 
@@ -47,7 +47,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return isActive;  // Hier entscheiden wir, ob das Konto gesperrt ist
+        return isActive;  // Sperrung
     }
 
     @Override
@@ -57,6 +57,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return isActive;  // Konto ist aktiv, wenn isActive true ist
+        return isActive;  // Aktiv
     }
 }

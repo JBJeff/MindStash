@@ -38,7 +38,7 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserRegistrationRequest request) {
-        // Prüfen, ob die E-Mail bereits registriert ist
+        // Prüft, ob die E-Mail bereits registriert ist
         if (userRepository.existsByEmail(request.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("E-Mail bereits registriert");
         }

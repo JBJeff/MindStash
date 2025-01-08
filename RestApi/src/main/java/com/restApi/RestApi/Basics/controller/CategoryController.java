@@ -62,7 +62,7 @@ public class CategoryController {
             // Notizen von List<Note> zu List<String> umwandeln
             if (category.getNotes() != null) {
                 List<String> noteContents = category.getNotes().stream()
-                        .map(Note::getContent) // Extrahiere den Content der Notizen
+                        .map(Note::getContent) // Extrahiert den Content der Notizen
                         .collect(Collectors.toList());
                 dto.setNotes(noteContents);
             } else {
@@ -90,7 +90,7 @@ public class CategoryController {
         // Notizen von List<Note> in List<String> umwandeln
         if (category.getNotes() != null) {
             List<String> noteContents = category.getNotes().stream()
-                    .map(Note::getContent) // Extrahiere den Content der Notizen
+                    .map(Note::getContent) // Extrahiert den Content der Notizen
                     .collect(Collectors.toList());
             response.setNotes(noteContents);
         } else {

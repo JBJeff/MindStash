@@ -47,38 +47,24 @@ public class CategoryService {
     Category category = categoryRepository.findById(categoryId)
             .orElseThrow(() -> new IllegalArgumentException("Category not found"));
 
-    // Initialize the notes list if null
+    
     if (category.getNotes() == null) {
         category.setNotes(new ArrayList<>());
     }
 
-    // Create a new Note and associate it with the category
+    
     Note newNote = new Note();
-    newNote.setContent(noteContent); // Assuming "content" is the field for note text
-    newNote.setCategory(category);  // Set the relationship
+    newNote.setContent(noteContent); 
+    newNote.setCategory(category);  
 
-    // Add the Note object to the list
     category.getNotes().add(newNote);
 
-    // Save the category (cascades can ensure the note is saved if set up correctly)
+    
     return categoryRepository.save(category);
 }
 
 
-//  // Löscht eine Kategorie, wenn sie dem Benutzer gehört
-//  public void deleteCategory(Long categoryId, Long userId) throws AccessDeniedException {
-//     // Kategorie aus der Datenbank abrufen
-//     Category category = categoryRepository.findById(categoryId)
-//             .orElseThrow(() -> new ResourceNotFoundException("Kategorie nicht gefunden mit ID: " + categoryId));
 
-//     // Überprüfen, ob die Kategorie zur Benutzer-ID gehört
-//     if (!category.getUser().getId().equals(userId)) {
-//         throw new AccessDeniedException("Sie haben keine Berechtigung, diese Kategorie zu löschen.");
-//     }
-
-//     // Kategorie löschen
-//     categoryRepository.delete(category);
-// }
 
 
     // Methode zum Löschen einer Kategorie

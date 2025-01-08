@@ -23,7 +23,7 @@ public class NoteController {
                     noteRequest.getTitle(), noteRequest.getContent());
             return ResponseEntity.ok(newNote); // Rückgabe der erstellten Notiz
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(null); // Fehler, wenn Benutzer oder Kategorie nicht gefunden wurden
+            return ResponseEntity.badRequest().body(null); // Fehlermeldung, wenn Benutzer oder Kategorie nicht gefunden wurden
         }
     }
 

@@ -25,7 +25,7 @@ public class Media {
     private Note note; // Referenz zur Notiz
 
     @Column(name = "url")
-    private String url; // Optional: Für externe Links oder Dateien, die im Dateisystem gespeichert sind
+    private String url; //Für externe Links oder Dateien, die im Dateisystem gespeichert sind
 
     @Column(name = "type", nullable = false)
     private String type; // Typ des Mediums (z. B. "image/png", "image/jpeg")

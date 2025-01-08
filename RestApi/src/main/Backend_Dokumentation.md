@@ -37,6 +37,8 @@ Die Anwendung basiert auf:
 3. Führe den folgenden Befehl aus, um die Anwendung zu starten:
    ```bash
    mvn spring-boot:run
+   ODER beide Anwendung gleichzeitig Starten
+   .\start.bat (Windows)
    ```
 
 ### Verfügbare Endpunkte
@@ -44,7 +46,7 @@ Die Anwendung basiert auf:
   - Registrierung: `POST /api/users/register`
     ```json
     {
-      "email": "hannes@example.com",
+      "email": "jeff@example.com",
       "password": "pass1234",
       "firstName": "hannes",
       "lastName": "Schlüter"
@@ -53,8 +55,8 @@ Die Anwendung basiert auf:
   - Login: `POST /api/users/login`
     ```json
     {
-      "email": "hannes@example.com",
-      "password": "Jeffrey1234"
+      "email": "jeff@example.com",
+      "password": "pass1234"
     }
     ```
 
