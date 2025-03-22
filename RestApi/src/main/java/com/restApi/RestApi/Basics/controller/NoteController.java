@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import com.restApi.RestApi.Basics.service.NoteService;
 import com.restApi.RestApi.Basics.dto.NoteRequest;
 import com.restApi.RestApi.Basics.entity.Note;
+import com.restApi.RestApi.Basics.service.NoteService;
+
 
 @RestController
 @RequestMapping("/api/notes")
